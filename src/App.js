@@ -2,6 +2,8 @@ import Header from './structure/Header'
 import Footer from './structure/Footer'
 import MainContent from './components/MainContent'
 
+import "./styles/style.css"
+
 
 
 
@@ -9,9 +11,9 @@ const App = () => {
    
   return (
     <div>
-< Header />
+{/* < Header /> */}
 <MainContent/>
-<Footer />
+{/* <Footer /> */}
     </div>
   )
 }
