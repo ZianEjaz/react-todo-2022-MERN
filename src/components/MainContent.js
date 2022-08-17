@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { WaveSpinner } from "react-spinners-kit";
-import { MdDeleteForever } from "react-icons/md";
+import { MdDeleteForever, MdClose } from "react-icons/md";
 
 // components import
 import Search from "./Search";
@@ -26,16 +26,14 @@ const MainContent = () => {
           return todo.title;
         });
         setTodoArray(todoTitle);
-        
       })
-      .then(()=>setLoadingAnimation(false));
-      // setTimeout(()=>setLoadingAnimation(false), 2000)
+      .then(() => setLoadingAnimation(false));
+    // setTimeout(()=>setLoadingAnimation(false), 2000)
   }, []);
 
   return (
     <div className="flex flex-wrap justify-center content-center bg-gray-200 h-screen">
-      < MdDeleteForever />
-      <div className="bg-gray-50 pt-8 pb-8 rounded-2xl shadow-xl w-1/3">
+      <div className="bg-gray-50 pt-8 pb-8 rounded-2xl shadow-xl lg:w-1/3 m-5 md:m-0">
         <div className="px-8 pb-5">
           <Search
             func={(event) => addTodo(event)}
@@ -44,17 +42,28 @@ const MainContent = () => {
         </div>
         <div className="overflow-y-scroll" style={{ maxHeight: "70vh" }}>
           <div className="w-full flex justify-center">
-          <WaveSpinner class="bg-green-300" size={100} color="#686769" loading={loadingAnimation} />
+            <WaveSpinner
+              class="bg-green-300"
+              size={100}
+              color="#686769"
+              loading={loadingAnimation}
+            />
           </div>
-        
+
           {todoArray.map((todo, index) => {
             return (
-              <p
-                key={index}
-                className="border-b p-3 hover:bg-gray-300 break-words"
-              >
-                {todo}
-              </p>
+              <div key={index} className="flex">
+                <div className="border-b hover:bg-gray-300 break-words flex p-3 w-full">
+                  <p className="w-full">{todo}</p>
+                  <span className="text-xl cursor-pointer text-red-600 m-auto">
+                    <MdClose />
+                  </span>
+                </div>
+
+                <span className="text-xl cursor-pointer text-white bg-red-600 m-auto p-3 place-self-center" onClick={()=>console.log(1)}>
+                  <MdDeleteForever />
+                </span>
+              </div>
             );
           })}
         </div>
