@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { WaveSpinner } from "react-spinners-kit";
-import { FaBeer } from 'react-icons/fa';
+import { MdDeleteForever } from "react-icons/md";
 
 // components import
 import Search from "./Search";
@@ -34,7 +34,7 @@ const MainContent = () => {
 
   return (
     <div className="flex flex-wrap justify-center content-center bg-gray-200 h-screen">
-      < FaBeer />
+      < MdDeleteForever />
       <div className="bg-gray-50 pt-8 pb-8 rounded-2xl shadow-xl w-1/3">
         <div className="px-8 pb-5">
           <Search
