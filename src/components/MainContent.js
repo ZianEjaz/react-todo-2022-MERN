@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { WaveSpinner } from "react-spinners-kit";
+import { FaBeer } from 'react-icons/fa';
 
 // components import
 import Search from "./Search";
@@ -7,41 +9,50 @@ const MainContent = () => {
   // state hooks
   const [todoArray, setTodoArray] = useState([]);
   const [inputText, setInputText] = useState("");
+  const [loadingAnimation, setLoadingAnimation] = useState(true);
 
-  const addTodo = (event)=>{
-    let newArray = todoArray;
+  //function to get userinput and add a todo to fetched array
+  const addTodo = async (event) => {
     if (event.key === "Enter") {
-      newArray.push(event.target.value)
+      setTodoArray([...todoArray, event.target.value]);
     }
-    setTodoArray(newArray);
-    console.log(todoArray)
-  }
+  };
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/todos?_page=1&_limit=10")
       .then((res) => res.json())
       .then((res) => {
-        const todoTitle = res.map((todo)=>{
-          return(todo.title)
-        })
-        setTodoArray(todoTitle)
+        const todoTitle = res.map((todo) => {
+          return todo.title;
+        });
+        setTodoArray(todoTitle);
+        
       })
+      .then(()=>setLoadingAnimation(false));
+      // setTimeout(()=>setLoadingAnimation(false), 2000)
   }, []);
 
   return (
     <div className="flex flex-wrap justify-center content-center bg-gray-200 h-screen">
-      <div className="bg-gray-50 pt-8 pb-8 rounded-2xl shadow-xl">
+      < FaBeer />
+      <div className="bg-gray-50 pt-8 pb-8 rounded-2xl shadow-xl w-1/3">
         <div className="px-8 pb-5">
-
-        <Search
-          func={(event) => addTodo(event)}
-          placeholder="Please enter a TODO"
-        />
+          <Search
+            func={(event) => addTodo(event)}
+            placeholder="Please enter a TODO"
+          />
         </div>
-        <div className="overflow-auto" style={{maxHeight : "70vh"}}>
+        <div className="overflow-y-scroll" style={{ maxHeight: "70vh" }}>
+          <div className="w-full flex justify-center">
+          <WaveSpinner class="bg-green-300" size={100} color="#686769" loading={loadingAnimation} />
+          </div>
+        
           {todoArray.map((todo, index) => {
             return (
-              <p key={index} className="border-b p-3 hover:bg-gray-300">
+              <p
+                key={index}
+                className="border-b p-3 hover:bg-gray-300 break-words"
+              >
                 {todo}
               </p>
             );
