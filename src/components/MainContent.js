@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { WaveSpinner } from "react-spinners-kit";
 import { MdDeleteForever, MdClose, MdAddCircle } from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // components import
 import Search from "./Search";
@@ -16,8 +18,31 @@ const MainContent = () => {
     if (inputText !== "") {
       setTodoArray([inputText, ...todoArray]);
       setInputText("");
+      toast.success(`New Todo Added`, {
+        position: "top-right",
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        progress: undefined,
+      });
     }
   };
+
+  // detect enter pressed
+  useEffect(() => {
+    const keyDownHandler = (event) => {
+      if (event.key === "Enter") {
+        addTodo();
+      }
+    };
+
+    document.addEventListener("keydown", keyDownHandler);
+
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
+  }, [inputText]);
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/todos?_page=1&_limit=10")
@@ -34,6 +59,7 @@ const MainContent = () => {
 
   return (
     <div className="flex flex-wrap justify-center content-center bg-gray-200 h-screen">
+      <ToastContainer />
       <div className="bg-gray-50 pt-8 pb-8 rounded-2xl shadow-xl lg:w-1/3 m-5 md:m-0">
         <div className="px-8 pb-5 flex content-center justify-center">
           <Search
@@ -41,13 +67,15 @@ const MainContent = () => {
             value={inputText}
             placeholder="Please enter a TODO"
           />
-        
-        <span className="my-auto">
-        <button onClick={addTodo}
-         className=" flex p-2.5 bg-gray-500 text-white rounded my-auto">
-          <MdAddCircle className="text-xl my-auto mr-2"/> Add Todo
-        </button>
-        </span>
+
+          <span className="my-auto">
+            <button
+              onClick={addTodo}
+              className=" flex p-2.5 bg-gray-500 text-white rounded my-auto"
+            >
+              <MdAddCircle className="text-xl my-auto mr-2" /> Add Todo
+            </button>
+          </span>
         </div>
 
         <div className="overflow-y-scroll" style={{ maxHeight: "70vh" }}>
