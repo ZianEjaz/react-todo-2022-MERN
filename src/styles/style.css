@@ -24,3 +24,12 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #a7a7a7;
 }
+
+div:hover + .delete-btn{
+  display: block !important;
+  transition: 1s;
+    left: 0;
+}
+.delete-btn:hover{
+  display: block !important;
+}
