@@ -13,12 +13,12 @@ const MainContent = () => {
   const [todoArray, setTodoArray] = useState([]);
   const [inputText, setInputText] = useState("");
   const [loadingAnimation, setLoadingAnimation] = useState(true);
-  const [isVisible, setisVisible] = useState(true);
+  const [pressedIndex, setPressedIndex] = useState("");
 
   //function to get userinput and add a todo to fetched array
   const addTodo = () => {
     if (inputText !== "") {
-      setTodoArray([inputText, ...todoArray]);
+      setTodoArray([...todoArray, inputText]);
       setInputText("");
       toast.success(`New Todo Added`, {
         position: "top-right",
@@ -32,8 +32,10 @@ const MainContent = () => {
   };
 
   const deleteTodo = (index) => {
-    todoArray.splice(index, 1);
-    setTodoArray([...todoArray]);
+    setPressedIndex(index);
+    // todoArray.splice(index, 1);
+    setTodoArray(todoArray.filter((id, indexNum) => index !== indexNum));
+    // setTodoArray([...todoArray]);
     toast.error(`Todo Deleted`, {
       position: "top-right",
       autoClose: 500,
@@ -93,7 +95,13 @@ const MainContent = () => {
           </span>
         </div>
 
-        <div className="overflow-y-scroll" style={{ maxHeight: "70vh" }}>
+        <Animated
+        animationIn="animate__fadeInLeft"
+          animationOut="animate__fadeOutLeft"
+          isVisible={true}
+          className="overflow-y-scroll"
+          style={{ maxHeight: "70vh" }}
+        >
           <div className="w-full flex justify-center">
             <WaveSpinner
               size={100}
@@ -104,26 +112,25 @@ const MainContent = () => {
 
           {todoArray.map((todo, index) => {
             return (
-              <Animated
-                animationIn="animate__fadeInLeft"
-                animationOut="animate__fadeOutLeft"
-                isVisible={isVisible}
-                key={index} className="flex"
-              >
-                  <div className="border-b hover:bg-gray-300 break-words flex p-3 w-full">
-                    <p className="w-full">{todo}</p>
-                  </div>
-
-                  <span
-                    className="delete-btn text-xl cursor-pointer text-white bg-red-600 m-auto p-3 place-self-center hidden"
-                    onClick={() => deleteTodo(index)}
-                  >
-                    <MdDeleteForever />
-                  </span>
-              </Animated>
+              <div className={`border-b hover:bg-gray-300 break-words flex p-3 w-full ${pressedIndex === index ? "hidden" : ""}`}>
+                <Animated
+                  animationOut="animate__fadeOutLeft"
+                  isVisible={pressedIndex === index ? false : true}
+                  key={index}
+                  className="flex"
+                >
+                  <p className="w-full">{index + " - " + todo}</p>
+                </Animated>
+                <span
+                  className="delete-btn text-xl cursor-pointer text-white bg-red-600 m-auto p-3 place-self-center"
+                  onClick={() => deleteTodo(index)}
+                >
+                  <MdDeleteForever />
+                </span>
+              </div>
             );
           })}
-        </div>
+        </Animated>
       </div>
     </div>
   );
