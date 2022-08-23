@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { WaveSpinner } from "react-spinners-kit";
-import { MdDeleteForever, MdClose, MdAddCircle } from "react-icons/md";
+import {
+  MdDeleteForever,
+  MdAddCircle,
+  MdModeEditOutline,
+} from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Animated } from "react-animated-css";
 
 // components import
 import Search from "./Search";
@@ -13,14 +16,28 @@ const MainContent = () => {
   const [todoArray, setTodoArray] = useState([]);
   const [inputText, setInputText] = useState("");
   const [loadingAnimation, setLoadingAnimation] = useState(true);
-  const [isVisible, setisVisible] = useState(true);
+  const [buttonText, setButtonText] = useState("Add");
+  const [editIndex, setEditIndex] = useState();
 
   //function to get userinput and add a todo to fetched array
   const addTodo = () => {
-    if (inputText !== "") {
-      setTodoArray([inputText, ...todoArray]);
+    if (inputText !== "" && buttonText === "Add") {
+      setTodoArray([...todoArray, inputText]);
       setInputText("");
       toast.success(`New Todo Added`, {
+        position: "top-right",
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        progress: undefined,
+      });
+    } else if (buttonText === "Update") {
+      todoArray[editIndex] = inputText;
+
+      setButtonText("Add");
+      setInputText("");
+      toast.success(`Todo Updated`, {
         position: "top-right",
         autoClose: 500,
         hideProgressBar: false,
@@ -44,23 +61,27 @@ const MainContent = () => {
     });
   };
 
+  const editTodo = (index) => {
+    setEditIndex(index);
+    setInputText(todoArray[index]);
+    setButtonText("Update");
+  };
+
   // detect enter pressed
-  useEffect(() => {
-    const keyDownHandler = (event) => {
-      if (event.key === "Enter") {
-        addTodo();
-      }
-    };
-
-    document.addEventListener("keydown", keyDownHandler);
-
-    return () => {
-      document.removeEventListener("keydown", keyDownHandler);
-    };
-  }, [inputText]);
+  // useEffect(() => {
+  //   const keyDownHandler = (event) => {
+  //     if (event.key === "Enter") {
+  //       addTodo();
+  //     }
+  //   };
+  //   document.addEventListener("keydown", keyDownHandler);
+  //   return () => {
+  //     document.removeEventListener("keydown", keyDownHandler);
+  //   };
+  // });
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/todos?_page=1&_limit=10")
+    fetch("https://jsonplaceholder.typicode.com/todos?_page=1&_limit=3")
       .then((res) => res.json())
       .then((res) => {
         const todoTitle = res.map((todo) => {
@@ -75,7 +96,7 @@ const MainContent = () => {
   return (
     <div className="flex flex-wrap justify-center bg-gray-200 h-screen">
       <ToastContainer />
-      <div className="bg-gray-50 pt-8 pb-8 rounded-2xl shadow-xl lg:w-1/3 m-5 md:m- h-auto">
+      <div className="bg-gray-50 pt-8 pb-8 rounded-2xl shadow-xl lg:w-1/3 m-5 h-auto w-full ">
         <div className=" shadow-lg px-8 pb-5 flex content-center justify-center">
           <Search
             func={(event) => setInputText(event.target.value)}
@@ -83,14 +104,12 @@ const MainContent = () => {
             placeholder="Please enter a TODO"
           />
 
-          <span className="my-auto">
-            <button
-              onClick={addTodo}
-              className=" flex p-2.5 bg-gray-500 text-white rounded my-auto"
-            >
-              <MdAddCircle className="text-xl my-auto mr-2" /> Add Todo
-            </button>
-          </span>
+          <button
+            onClick={addTodo}
+            className=" flex p-2.5 bg-gray-500 text-white rounded my-auto w-auto"
+          >
+            <MdAddCircle className="text-xl my-auto mr-2" /> {buttonText} Todo
+          </button>
         </div>
 
         <div className="overflow-y-scroll" style={{ maxHeight: "70vh" }}>
@@ -104,23 +123,19 @@ const MainContent = () => {
 
           {todoArray.map((todo, index) => {
             return (
-              <Animated
-                animationIn="animate__fadeInLeft"
-                animationOut="animate__fadeOutLeft"
-                isVisible={isVisible}
-                key={index} className="flex"
-              >
-                  <div className="border-b hover:bg-gray-300 break-words flex p-3 w-full">
-                    <p className="w-full">{todo}</p>
-                  </div>
-
-                  <span
-                    className="delete-btn text-xl cursor-pointer text-white bg-red-600 m-auto p-3 place-self-center hidden"
-                    onClick={() => deleteTodo(index)}
-                  >
-                    <MdDeleteForever />
+              <div className="flex" key={index}>
+                <div className="border-b hover:bg-gray-300 break-words flex p-3 w-full">
+                  <p className="w-full">{todo}</p>
+                </div>
+                <div className="delete-btn text-xl cursor-pointer text-white m-auto place-self-center flex">
+                  <span className="bg-green-600 p-3" onClick={() => editTodo(index)}>
+                    <MdModeEditOutline />
                   </span>
-              </Animated>
+                  <span className="bg-red-600 p-3"  onClick={() => deleteTodo(index)}>
+                    <MdDeleteForever/>
+                  </span>
+                </div>
+              </div>
             );
           })}
         </div>
