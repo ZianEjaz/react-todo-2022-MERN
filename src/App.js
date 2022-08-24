@@ -1,22 +1,20 @@
-import Header from './structure/Header'
-import Footer from './structure/Footer'
-import MainContent from './components/MainContent'
+import { BrowserRouter } from "react-router-dom";
+import "animate.css";
+import "./styles/style.css";
+import Router from "./structure/routes";
 
-import 'animate.css';
-import "./styles/style.css"
-
-
-
+// components
+import Header from "./structure/Header";
+import Footer from "./structure/Footer";
 
 const App = () => {
-   
   return (
-    <div>
-{/* < Header /> */}
-<MainContent/>
-{/* <Footer /> */}
-    </div>
-  )
-}
+    <BrowserRouter>
+      <Header />
+      <Router />
+      <Footer />
+    </BrowserRouter>
+  );
+};
 
-export default App
+export default App;
