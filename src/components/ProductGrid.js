@@ -1,15 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { CompareContext } from "../contexts/compare.context";
 
 const ProductGrid = ({ products }) => {
-  const [compareList, setCompareList] = useState([]);
   const compareContextData = useContext(CompareContext);
+  const [compareList, setCompareList] = useState(
+    compareContextData.compareList
+  );
 
   const triggerCompareClick = (product) => {
     setCompareList([...compareList, product]);
-    compareContextData.setCompareList(compareList);
   };
+
+  useEffect(() => {
+    compareContextData.setCompareList(compareList);
+  }, [compareList]);
   return (
     <div className=" flex flex-wrap">
       {products.map((product, index) => {
@@ -32,7 +37,9 @@ const ProductGrid = ({ products }) => {
                       className="bg-white text-black py-2 px-5 text-lg font-semibold rounded"
                       onClick={() => triggerCompareClick(product)}
                     >
-                      {compareContextData.compareList.some((val) => val.id === product.id)
+                      {compareContextData.compareList.some(
+                        (val) => val.id === product.id
+                      )
                         ? "Remove Compare"
                         : "Compare"}
                     </button>

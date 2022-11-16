@@ -8,7 +8,6 @@ import { CompareContext } from "../contexts/compare.context";
 const Header = () => {
   const contextValue = useContext(CompareContext
     )
-  console.log("🚀 ~ file: Header.js ~ line 10 ~ Header ~ contextValue", contextValue)
   return (
     <header className=" w-screen">
   
