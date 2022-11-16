@@ -3,7 +3,7 @@ import { FaGithub, FaYoutube, FaDiscord } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <div className="flex w-full bg-gray-700 text-center text-gray-300 p-5">
+    <div className="flex w-full bg-gray-700 text-center text-gray-300 p-5 self-end w-screen">
       <div className="w-full">
         Design and Developed @{" "}
         <a

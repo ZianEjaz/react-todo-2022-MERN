@@ -94,7 +94,7 @@ const MainContent = () => {
   }, []);
 
   return (
-    <div className="flex flex-wrap justify-center bg-gray-200 h-screen">
+    <div className="flex flex-wrap justify-center h-full w-screen">
       <ToastContainer />
       <div className="bg-gray-50 pt-8 pb-8 rounded-2xl shadow-xl lg:w-1/3 m-5 h-auto w-full ">
         <div className=" shadow-lg px-8 pb-5 flex content-center justify-center">
@@ -112,7 +112,7 @@ const MainContent = () => {
           </button>
         </div>
 
-        <div className="overflow-y-scroll" style={{ maxHeight: "70vh" }}>
+        <div className="overflow-y-scroll" style={{ maxHeight: "50vh" }}>
           <div className="w-full flex justify-center">
             <WaveSpinner
               size={100}
