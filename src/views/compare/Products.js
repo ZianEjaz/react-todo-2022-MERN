@@ -19,11 +19,11 @@ const Compare = () => {
   return (
     <div className="w-full ">
       <Animated
-        className={
-          `flex bg-gray-900 justify-center h-screen items-center ${!loadingAnimation && 'hidden' }`
-          
-         
-        }
+      //need to fix this animation issue because when animation hides there is no transitions and if
+      // transition happens then div is not removed from dom
+        className={`flex bg-gray-900 justify-center h-screen items-center  ${
+          !loadingAnimation && "hidden"
+        }`}
         animationIn="fadeIn"
         animationOut="fadeOut"
         isVisible={loadingAnimation}
