@@ -46,6 +46,14 @@ const Header = () => {
                 Products
               </Link>
             </div>
+            <div className="text-lg">
+              <Link
+                to="./testing"
+                className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-4"
+              >
+                Testing
+              </Link>
+            </div>
           </div>
           <div className="text-2xl ">
             <Link
